@@ -98,15 +98,9 @@ document your observations.
 ``` r
 ## TASK: Plot `price` vs `carat` below
 ## Your code here!
-ggplot(
-  data = diamonds,
-) + 
-  geom_point(
-    mapping = aes(
-      x = price,
-      y = carat
-    )
-  )
+diamonds %>% 
+  ggplot(aes(x = carat, y = price)) + 
+  geom_point()
 ```
 
 ![](c00-diamonds-assignment_files/figure-gfm/q1-task-1.png)<!-- -->
@@ -125,34 +119,30 @@ ggplot(
 ``` r
 ## TASK: Plot `price`, `carat`, and `cut` below
 ## Your code here!
-ggplot(
-  data = diamonds,
-) + 
-  geom_point(
-    mapping = aes(
-      x = price,
-      y = carat,
-      colour = cut
-    )
-  )
+diamonds %>% 
+  ggplot(aes(x = carat, y = price, colour = cut)) +
+  geom_point()
 ```
 
 ![](c00-diamonds-assignment_files/figure-gfm/q2-task-1.png)<!-- -->
 
 **Observations**:
 
-- I found that x=price, y=carat, alpha=colour to have best visual
+- I found that x=carat, y=price, alpha=colour to have best visual
   effect. This is because:
+
   - Since cut isn’t a numerical metric, I determined that it was best to
     have that variable as an aesthetic that’s not x or y.
   - While alpha = cut also produced a nice visual effect, sometimes the
     lighter points were harder to distinguish from the opaque black
     dots.
-  - Having x = price and y = carat, and not the other way around, was
-    more visually effective since it would bring the reader’s eye from
-    left to right rather than up to bottom left.
   - It was difficult to distinguish different points when stroke, fill,
     and size were used since the graph was very monochromatic.
+
+- Diamonds with \>3 carats have higher prices, no matter the cut.
+
+- Price varies much more when the diamond is below 3 carats, though
+  there isn’t much data on high-carat diamonds in this dataset.
 
 # Communication
 
