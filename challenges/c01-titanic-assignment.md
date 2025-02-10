@@ -279,7 +279,10 @@ df_prop %>%
     turns out to be an significant factor for the survivors. The plot
     for q4 implies that everyone in 1st and 2nd class survived, whereas
     in q5 it’s revealed that while all 1st and 2nd class children
-    survived, this is not true for 1st and 2nd class adults.
+    survived, this is not true for 1st and 2nd class adults. This is
+    because the plot in q4 overlays the adult data and child data over
+    each other, and since they’re the same colors, the proportion shows
+    up as 1.
 
 # Notes
 
