@@ -161,7 +161,8 @@ df_titanic %>% summarize(total = sum(n))
 
 ``` r
 ## TASK: Visualize counts against `Class` and `Sex`
-df_titanic %>% filter(Survived == "Yes") %>% 
+df_titanic %>% 
+  filter(Survived == "Yes") %>% 
   ggplot(aes(x = Class, y = n, fill = Sex)) +
   geom_col(position = "dodge")
 ```
@@ -225,7 +226,8 @@ df_prop
 ### **q4** Replicate your visual from q3, but display `Prop` in place of `n`. Document your observations, and note any new/different observations you make in comparison with q3. Is there anything *fishy* in your plot?
 
 ``` r
-df_prop %>% filter(Survived == "Yes") %>% 
+df_prop %>% 
+  filter(Survived == "Yes") %>% 
   ggplot(aes(x = Class, y = Prop, fill = Sex)) +
   geom_col(position = "dodge") 
 ```
@@ -250,26 +252,8 @@ df_prop %>% filter(Survived == "Yes") %>%
 additional variables!
 
 ``` r
-df_prop
-```
-
-    ## # A tibble: 32 × 7
-    ##    Class Sex    Age   Survived     n Total    Prop
-    ##    <chr> <chr>  <chr> <chr>    <dbl> <dbl>   <dbl>
-    ##  1 1st   Male   Child No           0     5   0    
-    ##  2 2nd   Male   Child No           0    11   0    
-    ##  3 3rd   Male   Child No          35    48   0.729
-    ##  4 Crew  Male   Child No           0     0 NaN    
-    ##  5 1st   Female Child No           0     1   0    
-    ##  6 2nd   Female Child No           0    13   0    
-    ##  7 3rd   Female Child No          17    31   0.548
-    ##  8 Crew  Female Child No           0     0 NaN    
-    ##  9 1st   Male   Adult No         118   175   0.674
-    ## 10 2nd   Male   Adult No         154   168   0.917
-    ## # ℹ 22 more rows
-
-``` r
-df_prop %>% filter(Survived == "Yes") %>% 
+df_prop %>% 
+  filter(Survived == "Yes") %>% 
   ggplot(aes(x = Class, y = Prop, fill = Sex)) +
   geom_col(position = "dodge") +
   facet_grid(~Age)
@@ -278,21 +262,24 @@ df_prop %>% filter(Survived == "Yes") %>%
     ## Warning: Removed 2 rows containing missing values or values outside the scale range
     ## (`geom_col()`).
 
-![](c01-titanic-assignment_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](c01-titanic-assignment_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 **Observations**:
 
-- (Write your observations here.)
+- The addition of age makes the graph a lot more detailed. While all the
+  1st and 2nd class children survived, that is not the case for the
+  adults. So, in fact, not everyone in the 1st and 2nd classes survived.
+- There’s still a higher proportion of female survivors compared to male
+  survivors for each class.
+- When the ship was sinking, people most likely prioritized saving women
+  and children.
 - If you saw something *fishy* in q4 above, use your new plot to explain
   the fishy-ness.
-  - The addition of age makes the graph a lot more detailed. While all
-    the 1st and 2nd class children survived, that is not the case for
-    the adults. So, in fact, not everyone in the 1st and 2nd classes
-    survived.
-  - There’s still a higher proportion of female survivors compared to
-    male survivors for each class.
-  - When the ship was sinking, people most likely prioritized saving
-    women and children.
+  - The plot in q4 doesn’t contain information about the age, which
+    turns out to be an significant factor for the survivors. The plot
+    for q4 implies that everyone in 1st and 2nd class survived, whereas
+    in q5 it’s revealed that while all 1st and 2nd class children
+    survived, this is not true for 1st and 2nd class adults.
 
 # Notes
 
