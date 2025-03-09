@@ -26,7 +26,7 @@ Unlike exercises, **challenges will be graded**. The following rubrics define ho
 <!-- ------------------------- -->
 
 | Category | Needs Improvement | Satisfactory |
-|------------------|-----------------------------|-------------------------|
+|------------------------|------------------------|------------------------|
 | Effort | Some task **q**'s left unattempted | All task **q**'s attempted |
 | Observed | Did not document observations, or observations incorrect | Documented correct observations based on analysis |
 | Supported | Some observations not clearly supported by analysis | All observations clearly supported by analysis (table, graph, etc.) |
@@ -90,15 +90,15 @@ df_michelson %>% glimpse()
 ## TODO: Compute summaries
 df_q1 <- df_michelson %>% 
   group_by(Distinctness) %>% 
-  summarize(n = n(), MeanVelocity = mean(Velocity))
+  summarize(n = n(), MeanVelocity = as.integer(mean(Velocity)))
 df_q1 %>%
   arrange(desc(Distinctness)) %>%
   knitr::kable()
 ```
 
-**Observations**: - Write your observations here! - (Your response here) - Why might your table differ from Michelson's?
+**Observations**: - Write your observations here! - Most images had a distinctness of 3, followed by 2, then 1. Distinctness 1 had considerably less images than the other two. - Why might your table differ from Michelson's?
 
-The mean velocity slightly differs from Michelson's. The mean velocities in the table provided seem to be rounded to the nearest whole number, whereas my mean velocity values are rounded to the nearest tenth.
+The initial meanVelocity was rounded to the nearest tenth, so I casted it as an integer. The mean velocity slightly differs from Michelson's likely due to the rounding error. Perhaps a different rounding technique was used.
 
 The `Velocity` values in the dataset are the speed of light *in air*; Michelson introduced a couple of adjustments to estimate the speed of light in a vacuum. In total, he added $+92$ km/s to his mean estimate for `VelocityVacuum` (from Michelson (1880), pg. 141). While the following isn't fully rigorous ($+92$ km/s is based on the mean temperature), we'll simply apply this correction to all the observations in the dataset.
 
@@ -126,7 +126,7 @@ Since a "true" value is often not known in practice, one generally does not know
 ```{r q3-task}
 ## TODO: Compare Michelson's estimate and error against the true value
 ## Your code here!
-ifelse(LIGHTSPEED_MICHELSON - LIGHTSPEED_VACUUM < LIGHTSPEED_PM, "Michelson's estimated error is less than true error", "Michelson's estimated error is greater than true error")
+ifelse(abs(LIGHTSPEED_MICHELSON - LIGHTSPEED_VACUUM) < LIGHTSPEED_PM, "Michelson's estimated error is greater than true error", "Michelson's estimated error is less than true error")
 
 LIGHTSPEED_MICHELSON - LIGHTSPEED_VACUUM
 ```
@@ -212,7 +212,7 @@ Differences
 
 -   There seems to be more data points for the simulated graph compared to the real graph.
 
--    There's more variation in the mean toward the beginning of June for the real data, whereas there's more variation in the mean toward the end of June for the simulated data.
+-   There's more variation in the mean toward the beginning of June for the real data, whereas there's more variation in the mean toward the end of June for the simulated data.
 
 ### **q5** You have access to a few other variables. Construct a **at least three** visualizations of `VelocityVacuum` against these other factors. Are there other patterns in the data that might help explain the difference between Michelson's estimate and `LIGHTSPEED_VACUUM`?
 
@@ -227,7 +227,16 @@ df_q2 %>%
 
 df_q2 %>% 
   ggplot(aes(x=Date, y = VelocityVacuum, colour = Distinctness)) +
-  geom_point()
+  geom_point() +
+  geom_hline(
+    yintercept = LIGHTSPEED_VACUUM,
+    linetype = "dotted",
+    color = "red"
+  ) 
+
+
+
+  
 ```
 
 **Observations**:
@@ -237,6 +246,7 @@ df_q2 %>%
 -   Distinctness levels 2 and 3 have more high temperature values compared level 1, though level 3 has the most high temperature values.
 -   Most distinctness level 1 values were founded between June 13 and June 20, whereas level 2 and 3 are a lot more varied regarding the date the values were recorded.
 -   There are higher temperatures toward the end of June. The lower temperatures during the middle of June correlate with the lower distinctness during the middle of June.
+-   There is no particular pattern, but most values seem to be higher than LIGHTSPEED_VACUUM. Perhaps the measurement tool Michelson used or his procedure resulted in overall higher values.
 
 ## Bibliography
 

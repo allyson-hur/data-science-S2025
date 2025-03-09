@@ -142,7 +142,7 @@ df_michelson %>% glimpse()
 ## TODO: Compute summaries
 df_q1 <- df_michelson %>% 
   group_by(Distinctness) %>% 
-  summarize(n = n(), MeanVelocity = mean(Velocity))
+  summarize(n = n(), MeanVelocity = as.integer(mean(Velocity)))
 df_q1 %>%
   arrange(desc(Distinctness)) %>%
   knitr::kable()
@@ -150,16 +150,19 @@ df_q1 %>%
 
 | Distinctness |   n | MeanVelocity |
 |:-------------|----:|-------------:|
-| 3            |  46 |     299861.7 |
-| 2            |  39 |     299858.5 |
-| 1            |  15 |     299808.0 |
+| 3            |  46 |       299861 |
+| 2            |  39 |       299858 |
+| 1            |  15 |       299808 |
 
-**Observations**: - Write your observations here! - (Your response
-here) - Why might your table differ from Michelson’s?
+**Observations**: - Write your observations here! - Most images had a
+distinctness of 3, followed by 2, then 1. Distinctness 1 had
+considerably less images than the other two. - Why might your table
+differ from Michelson’s?
 
-The mean velocity slightly differs from Michelson’s. The mean velocities
-in the table provided seem to be rounded to the nearest whole number,
-whereas my mean velocity values are rounded to the nearest tenth.
+The initial meanVelocity was rounded to the nearest tenth, so I casted
+it as an integer. The mean velocity slightly differs from Michelson’s
+likely due to the rounding error. Perhaps a different rounding technique
+was used.
 
 The `Velocity` values in the dataset are the speed of light *in air*;
 Michelson introduced a couple of adjustments to estimate the speed of
@@ -220,10 +223,10 @@ human judgment.\[2\]
 ``` r
 ## TODO: Compare Michelson's estimate and error against the true value
 ## Your code here!
-ifelse(LIGHTSPEED_MICHELSON - LIGHTSPEED_VACUUM < LIGHTSPEED_PM, "Michelson's estimated error is less than true error", "Michelson's estimated error is greater than true error")
+ifelse(abs(LIGHTSPEED_MICHELSON - LIGHTSPEED_VACUUM) < LIGHTSPEED_PM, "Michelson's estimated error is greater than true error", "Michelson's estimated error is less than true error")
 ```
 
-    ## [1] "Michelson's estimated error is greater than true error"
+    ## [1] "Michelson's estimated error is less than true error"
 
 ``` r
 LIGHTSPEED_MICHELSON - LIGHTSPEED_VACUUM
@@ -361,7 +364,12 @@ df_q2 %>%
 ``` r
 df_q2 %>% 
   ggplot(aes(x=Date, y = VelocityVacuum, colour = Distinctness)) +
-  geom_point()
+  geom_point() +
+  geom_hline(
+    yintercept = LIGHTSPEED_VACUUM,
+    linetype = "dotted",
+    color = "red"
+  ) 
 ```
 
 ![](c02-michelson-assignment_files/figure-gfm/unnamed-chunk-2-3.png)<!-- -->
@@ -379,6 +387,9 @@ df_q2 %>%
 - There are higher temperatures toward the end of June. The lower
   temperatures during the middle of June correlate with the lower
   distinctness during the middle of June.
+- There is no particular pattern, but most values seem to be higher than
+  LIGHTSPEED_VACUUM. Perhaps the measurement tool Michelson used or his
+  procedure resulted in overall higher values.
 
 ## Bibliography
 
