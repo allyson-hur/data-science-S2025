@@ -155,7 +155,6 @@ df_stang_long <-
   pivot_longer(
     names_to = c(".value", "angle"),
     names_sep = "_",
-    values_to = "val",
     starts_with("E") | starts_with("nu"),
     values_drop_na = TRUE,
   ) %>% 
@@ -246,6 +245,26 @@ df_stang_long %>% summary
     ##  3rd Qu.:0.3277  
     ##  Max.   :0.3310
 
+``` r
+df_stang_long %>% distinct(alloy)
+```
+
+    ## # A tibble: 1 × 1
+    ##   alloy  
+    ##   <chr>  
+    ## 1 al_24st
+
+``` r
+df_stang_long %>% distinct(angle)
+```
+
+    ## # A tibble: 3 × 1
+    ##   angle
+    ##   <int>
+    ## 1     0
+    ## 2    45
+    ## 3    90
+
 **Observations**:
 
 - Is there “one true value” for the material properties of Aluminum?
@@ -273,7 +292,10 @@ df_stang_long %>% summary
 
 df_stang_long %>% 
   ggplot(aes(x = angle, y = nu, group = angle)) +
-  geom_boxplot()
+  geom_boxplot() +
+  xlab("Angle (degrees)") +
+  ylab("Poisson's Ratio") +
+  ggtitle("Poisson's Ratio vs. Dogbone Angle")
 ```
 
 ![](c03-stang-assignment_files/figure-gfm/q3-task-1.png)<!-- -->
@@ -308,7 +330,9 @@ df_stang_long %>%
 
   ggplot(aes(nu, E, color = as_factor(thick))) +
   geom_point(size = 3) +
-  theme_minimal()
+  theme_minimal() +
+  ylab("E (ksi)") +
+  ggtitle("Young's Modulus vs. nu with thicknesses")
 ```
 
 ![](c03-stang-assignment_files/figure-gfm/q4-vis-1.png)<!-- -->

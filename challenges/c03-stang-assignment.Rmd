@@ -75,7 +75,6 @@ df_stang_long <-
   pivot_longer(
     names_to = c(".value", "angle"),
     names_sep = "_",
-    values_to = "val",
     starts_with("E") | starts_with("nu"),
     values_drop_na = TRUE,
   ) %>% 
@@ -119,6 +118,10 @@ print("Very good!")
 ```{r q2-task}
 
 df_stang_long %>% summary
+df_stang_long %>% distinct(alloy)
+df_stang_long %>% distinct(angle)
+
+
 ```
 
 **Observations**:
@@ -145,7 +148,11 @@ df_stang_long %>% summary
 
 df_stang_long %>% 
   ggplot(aes(x = angle, y = nu, group = angle)) +
-  geom_boxplot()
+  geom_boxplot() +
+  xlab("Angle (degrees)") +
+  ylab("Poisson's Ratio") +
+  ggtitle("Poisson's Ratio vs. Dogbone Angle")
+
 ```
 
 **Observations**:
@@ -167,7 +174,9 @@ df_stang_long %>%
 
   ggplot(aes(nu, E, color = as_factor(thick))) +
   geom_point(size = 3) +
-  theme_minimal()
+  theme_minimal() +
+  ylab("E (ksi)") +
+  ggtitle("Young's Modulus vs. nu with thicknesses")
 ```
 
 **Observations**:
