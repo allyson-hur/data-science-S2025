@@ -143,10 +143,11 @@ df_prop %>%
 **Observations**:
 
 -   Write your observations here.
--   Is there anything *fishy* going on in your plot?
-    -   Most people, if not everyone, in the 1st and 2nd classes survived
     -   A lot more females survived compared to males in both the 3rd and crew classes
     -   3rd class had the lowest proportion of survivors.
+    -   Everyone in 1st and 2nd class survived, both male and female.
+-   Is there anything *fishy* going on in your plot?
+    -   The plot suggests that essentially everyone in 1st and 2nd classes survived. This seems quite unreasonable and unlikely.
 
 ### **q5** Create a plot showing the group-proportion of occupants who *did* survive, along with aesthetics for `Class`, `Sex`, *and* `Age`. Document your observations below.
 
