@@ -550,7 +550,6 @@ with the per-100,000 counts. Compare the counts against the mean values
 you found in q6. Note any observations.
 
 ``` r
-## TASK: Find the top 10 max cases_per100k counties; report populations as well
 df_normalized %>%
   group_by(county, state, population) %>%
   summarize(top_cases_per100k = max(cases_per100k)) %>%
@@ -682,6 +681,8 @@ df_normalized %>%
 ### Geographic exceptions
 
 <!-- ------------------------- -->
+
+g
 
 The NYT repo documents some [geographic
 exceptions](https://github.com/nytimes/covid-19-data#geographic-exceptions);

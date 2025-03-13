@@ -341,7 +341,6 @@ df_normalized %>%
 Find the top 10 counties in terms of `cases_per100k`, and the top 10 in terms of `deaths_per100k`. Report the population of each county along with the per-100,000 counts. Compare the counts against the mean values you found in q6. Note any observations.
 
 ```{r q7-task}
-## TASK: Find the top 10 max cases_per100k counties; report populations as well
 df_normalized %>%
   group_by(county, state, population) %>%
   summarize(top_cases_per100k = max(cases_per100k)) %>%
@@ -418,7 +417,7 @@ df_normalized %>%
 
 ### Geographic exceptions
 
-<!-- ------------------------- -->
+<!-- ------------------------- -->g
 
 The NYT repo documents some [geographic exceptions](https://github.com/nytimes/covid-19-data#geographic-exceptions); the data for New York, Kings, Queens, Bronx and Richmond counties are consolidated under "New York City" *without* a fips code. Thus the normalized counts in `df_normalized` are `NA`. To fix this, you would need to merge the population data from the New York City counties, and manually normalize the data.
 
