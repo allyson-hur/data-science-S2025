@@ -252,7 +252,6 @@ df_normalized <- df_data %>%
     cases_per100k = 1e5 * cases / population,
     deaths_per100k = 1e5 * deaths / population
   )
-df_normalized
 ```
 
 You may use the following test to check your work.
