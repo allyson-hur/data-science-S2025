@@ -409,24 +409,7 @@ df_normalized <- df_data %>%
     cases_per100k = 1e5 * cases / population,
     deaths_per100k = 1e5 * deaths / population
   )
-df_normalized
 ```
-
-    ## # A tibble: 2,502,832 × 9
-    ##    date       county      state      fips  cases deaths population cases_per100k
-    ##    <date>     <chr>       <chr>      <chr> <dbl>  <dbl>      <int>         <dbl>
-    ##  1 2020-01-21 Snohomish   Washington 53061     1      0     786620       0.127  
-    ##  2 2020-01-22 Snohomish   Washington 53061     1      0     786620       0.127  
-    ##  3 2020-01-23 Snohomish   Washington 53061     1      0     786620       0.127  
-    ##  4 2020-01-24 Cook        Illinois   17031     1      0    5223719       0.0191 
-    ##  5 2020-01-24 Snohomish   Washington 53061     1      0     786620       0.127  
-    ##  6 2020-01-25 Orange      California 06059     1      0    3164182       0.0316 
-    ##  7 2020-01-25 Cook        Illinois   17031     1      0    5223719       0.0191 
-    ##  8 2020-01-25 Snohomish   Washington 53061     1      0     786620       0.127  
-    ##  9 2020-01-26 Maricopa    Arizona    04013     1      0    4253913       0.0235 
-    ## 10 2020-01-26 Los Angeles California 06037     1      0   10098052       0.00990
-    ## # ℹ 2,502,822 more rows
-    ## # ℹ 1 more variable: deaths_per100k <dbl>
 
 You may use the following test to check your work.
 
