@@ -167,14 +167,16 @@ df_pivot <- df_antibiotics %>%
   pivot_longer(
     cols = c(penicillin, streptomycin, neomycin),
     names_to = "antibiotic"
-  )
+  ) %>% 
+  mutate(bacteria = fct_reorder(bacteria, antibiotic))
+
 
 df_pivot 
 ```
 
     ## # A tibble: 48 × 4
     ##    bacteria              gram     antibiotic     value
-    ##    <chr>                 <chr>    <chr>          <dbl>
+    ##    <fct>                 <chr>    <chr>          <dbl>
     ##  1 Aerobacter aerogenes  negative penicillin   870    
     ##  2 Aerobacter aerogenes  negative streptomycin   1    
     ##  3 Aerobacter aerogenes  negative neomycin       1.6  
@@ -196,12 +198,12 @@ is Gram positive or negative.
 
 ``` r
 df_pivot %>% 
+  mutate(bacteria = fct_reorder(bacteria, antibiotic)) %>% 
   ggplot(aes(
     x = bacteria,
     y = value
   ) ) +
-  geom_boxplot() +
-  geom_point(mapping=(aes(color = antibiotic, shape = gram)))+
+  geom_point(aes(color = antibiotic, shape = gram), size = 2) +
   scale_y_log10() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
@@ -221,13 +223,19 @@ your other visuals.
 ``` r
 df_pivot %>% 
   ggplot(aes(
-    x = bacteria,
+    x = antibiotic,
     y = value,
-    fill = gram,
-  ) ) +
-  geom_col() +
+    fill = bacteria
+  )) +
+  geom_col(position = "dodge") +
+  facet_wrap(~gram, scales = "free_x") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  facet_wrap(~antibiotic)
+  scale_y_log10() +
+  geom_hline(
+    yintercept = 0.1,
+    linetype = "dotted",
+    color = "red"
+  )
 ```
 
 ![](c05-antibiotics-assignment_files/figure-gfm/q1.2-1.png)<!-- -->
@@ -246,7 +254,17 @@ df_antibiotics %>%
   ggplot(aes(penicillin,streptomycin, shape = gram )) + 
   geom_point(mapping = aes(color = bacteria)) +
   scale_y_log10() +
-  scale_x_log10() 
+  scale_x_log10()  +
+  geom_hline(
+    yintercept = 0.1,
+    linetype = "dotted",
+    color = "red"
+  ) +
+  geom_vline(
+    xintercept = 0.1,
+    linetype = "dotted",
+    color = "red"
+  )
 ```
 
 ![](c05-antibiotics-assignment_files/figure-gfm/q1.3-1.png)<!-- -->
@@ -269,7 +287,13 @@ df_pivot %>%
   ) ) +
   geom_col() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  facet_wrap(~bacteria, scales = "free_x")
+  facet_wrap(~bacteria, scales = "free_x") +
+  scale_x_log10() +
+  geom_vline(
+    xintercept = 0.1,
+    linetype = "dotted",
+    color = "red"
+  )
 ```
 
 ![](c05-antibiotics-assignment_files/figure-gfm/q1.4-1.png)<!-- -->
@@ -314,21 +338,20 @@ opportunity to think about why this is.**
 
 *Observations* - What is your response to the question above? -
 
-Neomycin has the highest effectiveness for positive strain of Aerobacter
-aerogenes and Klebsiella pneumoniae. Neomycin also has the highest
-effectiveness for negative strain of Diplococcus pneumonia,
-streptococcus hemolyticus, and streptococcus vindans.
+Neomycin has the highest effectiveness for negative strains of bacteria,
+including Diplococcus pneumonia, streptococcus hemolyticus, and
+streptococcus vindans.
 
 Penicillin has the highest effectiveness when it comes to positive
-strain of Aerobecter aerogenes, Escherichia coli, Klebsiella pneumoniae,
-proteus vularis, mycobacterium tuberculosis, psuedomonas aeruginosa, and
-salmonella schottruelleri.
+strains of bacteria, including Aerobecter aerogenes, Escherichia coli,
+Klebsiella pneumoniae, proteus vularis, mycobacterium tuberculosis,
+psuedomonas aeruginosa, and salmonella schottruelleri.
 
-Streptomycin has the highest effectiveness when it comes to the positive
-strain of brucella abortus, mycobacterium tuberculosis, and pseudomonas
-aeruginosa. It also has the highest effectiveness for the negative
-strains diplococcus pneumonia, streptococcus hemoolyticus, and
-streptococcus vindans
+Streptomycin has the widest range for the effectiveness of both positive
+and negative strains. Positive strains include brucella abortus,
+mycobacterium tuberculosis, and pseudomonas aeruginosa while the
+negative strains include diplococcus pneumonia, streptococcus
+hemoolyticus, and streptococcus vindans
 
 Overall, neomycin was effective for mostly negative strains while
 penicillin was effective for only positive strains. Streptomycin has the
