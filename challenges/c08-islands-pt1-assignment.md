@@ -130,8 +130,8 @@ you still need to count, because your numbers *will* be different!
   - 96.93%
 - Are there any sources of *real* uncertainty in the percent occupied
   you calculated?
-  - This is assuming that houses are either occupied and unoccupied
-    (there are no other options)
+  - Yes, because islanders are born, die, and move around. If islanders
+    move around, the number of occupied houses will change overtime.
 - Are there any sources of *erroneous* uncertainty in the percent
   occupied you calculated?
   - I rounded to the nearest hundredth, so this rounding could have an
@@ -554,7 +554,7 @@ df_interval_bootstrap <-
 ## TODO: Finish this code, using the name_prevalence() helper you implemented
 ## HINT: Remember that you need to use analysis() when operating on split_df
         analysis(split_df) %>% 
-          name_prevalence()
+          name_prevalence("Collins")
       }
     )
   ) %>% 
@@ -661,17 +661,18 @@ study is observational or experimental.
     will follow. That way, you can feasibly split up data collection
     among the whole team, while making sure each team member doesn’t
     make ad hoc decisions that introduce bias into your results.
-  - Take blood alcohol content before
-  - Take one coordination test (balance test with eyes closed)
-  - Take one mental test (memory game)
-  - Give them vodka (6 shots)
-  - Take blood alcohol content again
-  - Take one coordination test (balance test with eyes closed)
-  - Take one mental test (memory game)
+    1.  Memory Game, balance Test eyes closed, BAC
+    2.  ⁠Set Timer
+    3.  Give everyone vodka 30 mL one shot.
+    4.  Repeat till 6 shots
+    5.  Check timer for 30-45 min
+    6.  Memory Game, balance Test eyes closed, BAC
+    7.  Record in spreadsheet
+    8.  ⁠NA if they don’t consent
   - All this data will be compiled in a spreadsheet and indexed
 - (How will you ensure the data is representative of your chosen
   population?)
-  - We will do everyone who are in those majors.
+  - We will ra
 - (For experiments only: How will you ensure any effects you observe are
   due to the treatment, and not due to other factors?)
   - We will take random samples of 25 for each major.
