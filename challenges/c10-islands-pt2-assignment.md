@@ -128,15 +128,23 @@ study is observational or experimental.
   - Which major(s) are most likely to perform the best coordination-wise
     before the influence of alcohol? What about mentally?
     - We suspect that law majors will perform the best in coordination
-      and mentally prior to the presence of alcohol. 
+      and mentally prior to the presence of alcohol. This is because
+      being the occupation is extremely demanding in terms of thinking
+      quickly on one’s feet and being organized. We also believe this
+      mental strength will transfer to coordination as well because, as
+      some people say, most physical activities are dependent on one’s
+      mental state.
   - Which major(s) are most likely to perform the best coordination-wise
     when under the influence of alcohol? What about mentally?
     - We suspect that the art majors will perform the best when under
-      the influence of alcohol. 
+      the influence of alcohol. Art is a very free-flowing medium, so we
+      believe the art students will be the most adaptable. 
   - Which major(s) are most likely to have their mental performance
     affected by alcohol? What about coordination-wise?
     - We suspect that science majors will be drastically affected by the
-      influence of alcohol.
+      influence of alcohol. We believe this is because of the academic
+      demands of the major. Science majors would have quite a heavy
+      workload, so they generally wouldn’t drink as much.
 
 #### Sampling plan
 
@@ -463,19 +471,26 @@ conclude from your study?
     before the influence of alcohol? What about mentally?
 
 - We suspect that law majors will perform the best in coordination and
-  mentally prior to the presence of alcohol. 
+  mentally prior to the presence of alcohol. This is because being the
+  occupation is extremely demanding in terms of thinking quickly on
+  one’s feet and being organized. We also believe this mental strength
+  will transfer to coordination as well because, as some people say,
+  most physical activities are dependent on one’s mental state.
 
 2.  Which major(s) are most likely to perform the best coordination-wise
     when under the influence of alcohol? What about mentally?
 
 - We suspect that the art majors will perform the best when under the
-  influence of alcohol. 
+  influence of alcohol. Art is a very free-flowing medium, so we believe
+  the art students will be the most adaptable. 
 
 3.  Which major(s) are most likely to have their mental performance
     affected by alcohol? What about coordination-wise?
 
 - We suspect that science majors will be drastically affected by the
-  influence of alcohol. 
+  influence of alcohol. We believe this is because of the academic
+  demands of the major. Science majors would have quite a heavy
+  workload, so they generally wouldn’t drink as much. 
 
 First hypothesis: 
 
