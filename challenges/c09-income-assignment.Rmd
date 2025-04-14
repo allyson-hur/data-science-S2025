@@ -26,7 +26,7 @@ Unlike exercises, **challenges will be graded**. The following rubrics define ho
 <!-- ------------------------- -->
 
 | Category | Needs Improvement | Satisfactory |
-|------------------|-----------------------------|-------------------------|
+|------------------------|------------------------|------------------------|
 | Effort | Some task **q**'s left unattempted | All task **q**'s attempted |
 | Observed | Did not document observations, or observations incorrect | Documented correct observations based on analysis |
 | Supported | Some observations not clearly supported by analysis | All observations clearly supported by analysis (table, graph, etc.) |
@@ -133,7 +133,7 @@ df_q3 <-
   rename(
     geographic_area_name = `Geographic Area Name`,
     income_estimate = `Estimate`,
-    "income_moe" =  "Margin of Error"
+    income_moe =  "Margin of Error"
   ) %>% 
   glimpse()
 ```
@@ -165,14 +165,14 @@ $$\text{MOE} = 1.645 \times \text{SE}.$$
 
 ```{r q4-task}
 
-CI <- qnorm(1 - (1 - 0.99) / 2)
+z <- qnorm(1 - (1 - 0.99) / 2)
 
 df_q4 <- df_q3 %>% 
   mutate(
     income_SE = income_moe / 1.645,
     income_CV = income_SE / income_estimate,
-    income_lo = income_estimate - CI * income_SE,
-    income_hi = income_estimate + CI * income_SE,
+    income_lo = income_estimate - z * income_SE,
+    income_hi = income_estimate + z * income_SE,
   )
 ```
 
@@ -230,12 +230,11 @@ One last wrangling step: We need to join the two datasets so we can compare popu
 glimpse(df_q4)
 glimpse(df_pop)
 
-df_pop <- df_pop %>%
-  rename(geographic_area_name = `Geographic Area Name`)
-
-df_data <-
-  right_join(df_pop,df_q4, by = c("Geography", "geographic_area_name"))
-df_data
+df_data <- left_join(
+  df_pop,
+  df_q4,
+  by = c("Geographic Area Name" = "geographic_area_name")
+)
 ```
 
 # Analysis
@@ -251,9 +250,9 @@ We now have both estimates and confidence intervals for `\\d-person families`. N
 wid <- 0.5
 
 df_data %>%
-  filter(str_detect(geographic_area_name, "Massachusetts")) %>%
+  filter(str_detect(`Geographic Area Name`, "Massachusetts")) %>%
   mutate(
-    county = str_remove(geographic_area_name, " County,.*$"),
+    county = str_remove(`Geographic Area Name`, " County,.*$"),
     county = fct_reorder(county, income_estimate)
   ) %>%
 
@@ -274,11 +273,10 @@ df_data %>%
 **Observations**:
 
 -   Document your observations here.
-    -   Confidence interval increases as the family size increases.
+    -   Confidence interval width increases as the family size increases.
     -   Most 2-person families consistently have a median income of between 50000 to 125000, which is at the lower end of the scale. 3-person families generally make between 75000 and 150000, which is slightly higher. The 4-person and above families' median incomes seem to be more varied across median incomes.
-    -   ...
 -   Can you confidently distinguish between household incomes in Suffolk county? Why or why not?
-    -   No because household incomes in Suffolk county overlap a lot, so one median income can fall into the range of multiple houses.
+    -   No because confidence intervals of the household incomes in Suffolk county overlap a lot, so one median income can fall into the range of multiple houses.
 -   Which counties have the widest confidence intervals?
     -   Nantucket, Dukes, Berkshire, Hampshire
 
@@ -302,7 +300,7 @@ df_data %>%
 **Observations**:
 
 -   What *overall* trend do you see between `SE` and population? Why might this trend exist?
-    -   There is a small negative correlation between standard error and population, though it's not a strong trend. If the Census Bureau collects data proportional to the population size, a larger population could lead to a larger sample size.
+    -   There is a discernible but moderate correlation between standard error and population. If the Census Bureau collects data proportional to the population size, a larger population could lead to a larger sample size.
 -   What does this *overall* trend tell you about the relative ease of studying small vs large counties?
     -   It can be easier to be certain about conclusions drawn from large countries because there are more data points to study.
 
@@ -322,18 +320,18 @@ glimpse(df_data)
 ## TODO: Pose and answer your own question about the data
 
 df_ca <-df_data %>%
-  filter(str_detect(geographic_area_name, "California")) %>%
+  filter(str_detect(`Geographic Area Name`, "California")) %>%
   filter(category == "4-person families") %>% 
   mutate(
-    county = str_remove(geographic_area_name, " County,.*$"),
+    county = str_remove(`Geographic Area Name`, " County,.*$"),
     county = fct_reorder(county, income_estimate)
   ) 
 
 df_ny <- df_data %>%
-  filter(str_detect(geographic_area_name, "New York")) %>%
+  filter(str_detect(`Geographic Area Name`, "New York")) %>%
   filter(category == "4-person families") %>% 
   mutate(
-    county = str_remove(geographic_area_name, " County,.*$"),
+    county = str_remove(`Geographic Area Name`, " County,.*$"),
     county = fct_reorder(county, income_estimate)
   ) 
   

@@ -274,7 +274,7 @@ df_q3 <-
   rename(
     geographic_area_name = `Geographic Area Name`,
     income_estimate = `Estimate`,
-    "income_moe" =  "Margin of Error"
+    income_moe =  "Margin of Error"
   ) %>% 
   glimpse()
 ```
@@ -346,14 +346,14 @@ $$\text{MOE} = 1.645 \times \text{SE}.$$
 ### **q4** Convert the margin of error to standard error. Additionally, compute a 99% confidence interval on income, and normalize the standard error to `income_CV = income_SE / income_estimate`. Provide these columns with the names `income_SE, income_lo, income_hi, income_CV`.
 
 ``` r
-CI <- qnorm(1 - (1 - 0.99) / 2)
+z <- qnorm(1 - (1 - 0.99) / 2)
 
 df_q4 <- df_q3 %>% 
   mutate(
     income_SE = income_moe / 1.645,
     income_CV = income_SE / income_estimate,
-    income_lo = income_estimate - CI * income_SE,
-    income_hi = income_estimate + CI * income_SE,
+    income_lo = income_estimate - z * income_SE,
+    income_hi = income_estimate + z * income_SE,
   )
 ```
 
@@ -459,30 +459,12 @@ glimpse(df_pop)
     ## $ ...5                   <lgl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
 
 ``` r
-df_pop <- df_pop %>%
-  rename(geographic_area_name = `Geographic Area Name`)
-
-df_data <-
-  right_join(df_pop,df_q4, by = c("Geography", "geographic_area_name"))
-df_data
+df_data <- left_join(
+  df_pop,
+  df_q4,
+  by = c("Geographic Area Name" = "geographic_area_name")
+)
 ```
-
-    ## # A tibble: 15,286 × 12
-    ##    Geography      geographic_area_name    population_estimate margin_error ...5 
-    ##    <chr>          <chr>                                 <dbl> <chr>        <lgl>
-    ##  1 0500000US01001 Autauga County, Alabama               55200 *****        NA   
-    ##  2 0500000US01001 Autauga County, Alabama               55200 *****        NA   
-    ##  3 0500000US01001 Autauga County, Alabama               55200 *****        NA   
-    ##  4 0500000US01001 Autauga County, Alabama               55200 *****        NA   
-    ##  5 0500000US01001 Autauga County, Alabama               55200 *****        NA   
-    ##  6 0500000US01003 Baldwin County, Alabama              208107 *****        NA   
-    ##  7 0500000US01003 Baldwin County, Alabama              208107 *****        NA   
-    ##  8 0500000US01003 Baldwin County, Alabama              208107 *****        NA   
-    ##  9 0500000US01003 Baldwin County, Alabama              208107 *****        NA   
-    ## 10 0500000US01003 Baldwin County, Alabama              208107 *****        NA   
-    ## # ℹ 15,276 more rows
-    ## # ℹ 7 more variables: category <chr>, income_estimate <dbl>, income_moe <dbl>,
-    ## #   income_SE <dbl>, income_CV <dbl>, income_lo <dbl>, income_hi <dbl>
 
 # Analysis
 
@@ -499,9 +481,9 @@ uncertainties: Let’s practice!
 wid <- 0.5
 
 df_data %>%
-  filter(str_detect(geographic_area_name, "Massachusetts")) %>%
+  filter(str_detect(`Geographic Area Name`, "Massachusetts")) %>%
   mutate(
-    county = str_remove(geographic_area_name, " County,.*$"),
+    county = str_remove(`Geographic Area Name`, " County,.*$"),
     county = fct_reorder(county, income_estimate)
   ) %>%
 
@@ -524,17 +506,17 @@ df_data %>%
 **Observations**:
 
 - Document your observations here.
-  - Confidence interval increases as the family size increases.
+  - Confidence interval width increases as the family size increases.
   - Most 2-person families consistently have a median income of between
     50000 to 125000, which is at the lower end of the scale. 3-person
     families generally make between 75000 and 150000, which is slightly
     higher. The 4-person and above families’ median incomes seem to be
     more varied across median incomes.
-  - …
 - Can you confidently distinguish between household incomes in Suffolk
   county? Why or why not?
-  - No because household incomes in Suffolk county overlap a lot, so one
-    median income can fall into the range of multiple houses.
+  - No because confidence intervals of the household incomes in Suffolk
+    county overlap a lot, so one median income can fall into the range
+    of multiple houses.
 - Which counties have the widest confidence intervals?
   - Nantucket, Dukes, Berkshire, Hampshire
 
@@ -557,16 +539,19 @@ df_data %>%
   scale_y_log10()
 ```
 
+    ## Warning: Removed 1 row containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
 ![](c09-income-assignment_files/figure-gfm/q7-task-1.png)<!-- -->
 
 **Observations**:
 
 - What *overall* trend do you see between `SE` and population? Why might
   this trend exist?
-  - There is a small negative correlation between standard error and
-    population, though it’s not a strong trend. If the Census Bureau
-    collects data proportional to the population size, a larger
-    population could lead to a larger sample size.
+  - There is a discernible but moderate correlation between standard
+    error and population. If the Census Bureau collects data
+    proportional to the population size, a larger population could lead
+    to a larger sample size.
 - What does this *overall* trend tell you about the relative ease of
   studying small vs large counties?
   - It can be easier to be certain about conclusions drawn from large
@@ -585,37 +570,38 @@ States: Pose your own question and try to answer it with the data.
 glimpse(df_data)
 ```
 
-    ## Rows: 15,286
-    ## Columns: 12
-    ## $ Geography            <chr> "0500000US01001", "0500000US01001", "0500000US010…
-    ## $ geographic_area_name <chr> "Autauga County, Alabama", "Autauga County, Alaba…
-    ## $ population_estimate  <dbl> 55200, 55200, 55200, 55200, 55200, 208107, 208107…
-    ## $ margin_error         <chr> "*****", "*****", "*****", "*****", "*****", "***…
-    ## $ ...5                 <lgl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-    ## $ category             <chr> "2-person families", "3-person families", "4-pers…
-    ## $ income_estimate      <dbl> 64947, 80172, 85455, 88601, 103787, 63975, 79390,…
-    ## $ income_moe           <dbl> 6663, 14181, 10692, 20739, 12387, 2297, 8851, 519…
-    ## $ income_SE            <dbl> 4050.456, 8620.669, 6499.696, 12607.295, 7530.091…
-    ## $ income_CV            <dbl> 0.06236556, 0.10752718, 0.07605987, 0.14229292, 0…
-    ## $ income_lo            <dbl> 54513.717, 57966.629, 68712.892, 56126.761, 84390…
-    ## $ income_hi            <dbl> 75380.28, 102377.37, 102197.11, 121075.24, 123183…
+    ## Rows: 15,287
+    ## Columns: 13
+    ## $ Geography.x            <chr> "0500000US01001", "0500000US01001", "0500000US0…
+    ## $ `Geographic Area Name` <chr> "Autauga County, Alabama", "Autauga County, Ala…
+    ## $ population_estimate    <dbl> 55200, 55200, 55200, 55200, 55200, 208107, 2081…
+    ## $ margin_error           <chr> "*****", "*****", "*****", "*****", "*****", "*…
+    ## $ ...5                   <lgl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+    ## $ Geography.y            <chr> "0500000US01001", "0500000US01001", "0500000US0…
+    ## $ category               <chr> "2-person families", "3-person families", "4-pe…
+    ## $ income_estimate        <dbl> 64947, 80172, 85455, 88601, 103787, 63975, 7939…
+    ## $ income_moe             <dbl> 6663, 14181, 10692, 20739, 12387, 2297, 8851, 5…
+    ## $ income_SE              <dbl> 4050.456, 8620.669, 6499.696, 12607.295, 7530.0…
+    ## $ income_CV              <dbl> 0.06236556, 0.10752718, 0.07605987, 0.14229292,…
+    ## $ income_lo              <dbl> 54513.717, 57966.629, 68712.892, 56126.761, 843…
+    ## $ income_hi              <dbl> 75380.28, 102377.37, 102197.11, 121075.24, 1231…
 
 ``` r
 ## TODO: Pose and answer your own question about the data
 
 df_ca <-df_data %>%
-  filter(str_detect(geographic_area_name, "California")) %>%
+  filter(str_detect(`Geographic Area Name`, "California")) %>%
   filter(category == "4-person families") %>% 
   mutate(
-    county = str_remove(geographic_area_name, " County,.*$"),
+    county = str_remove(`Geographic Area Name`, " County,.*$"),
     county = fct_reorder(county, income_estimate)
   ) 
 
 df_ny <- df_data %>%
-  filter(str_detect(geographic_area_name, "New York")) %>%
+  filter(str_detect(`Geographic Area Name`, "New York")) %>%
   filter(category == "4-person families") %>% 
   mutate(
-    county = str_remove(geographic_area_name, " County,.*$"),
+    county = str_remove(`Geographic Area Name`, " County,.*$"),
     county = fct_reorder(county, income_estimate)
   ) 
   
