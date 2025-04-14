@@ -1,6 +1,6 @@
 Estimating Pi With a Shotgun
 ================
-(Your name here)
+Allyson Hur
 2020-
 
 - [Grading Rubric](#grading-rubric)
@@ -317,7 +317,7 @@ Using your data in `df_q1`, estimate $\pi$.
 df_q3 <- 
   df_q1 %>% 
   # TODO: Estimate pi as the column `pi_est`
-  mutate(pi_est = (4 * (x^2 + y^2 <= 1))) %>% 
+  mutate(pi_est = stat(x,y)) %>% 
   summarize(pi_est = mean(pi_est))
 df_q3
 ```
@@ -385,7 +385,7 @@ df_q4 <-
           # Estimate pi (pi_est) using the resampled data;
           # this should be *identical* to the
           # code you wrote for q3
-            mutate(pi_est = 4 * (x^2 + y^2 <= 1)) %>%
+            mutate(pi_est = stat(x,y)) %>%
             summarize(pi_est = mean(pi_est)) %>% 
           pull(pi_est)
       }
@@ -450,22 +450,22 @@ done something *wrong* in one of the tasks….
 
 ``` r
 df_q1 %>% 
-  mutate(pi_est = (x^2+y^2 <= 1)*4) %>% 
+  mutate(pi_est = stat(x,y)) %>% 
   summarize(
     mean_pi = mean(pi_est), 
     sd_pi = sd(pi_est),
   ) %>% 
   mutate(
-    se = sd_pi/sqrt(1000),
+    se = sd_pi/sqrt(n),
     pi_lo = mean(pi) - qnorm(1 - (1 - 0.95) / 2) * se,
     pi_up = mean(pi) + qnorm(1 - (1 - 0.95) / 2) * se,
 )
 ```
 
     ## # A tibble: 1 × 5
-    ##   mean_pi sd_pi     se pi_lo pi_up
-    ##     <dbl> <dbl>  <dbl> <dbl> <dbl>
-    ## 1    3.15  1.64 0.0518  3.04  3.24
+    ##   mean_pi sd_pi      se pi_lo pi_up
+    ##     <dbl> <dbl>   <dbl> <dbl> <dbl>
+    ## 1    3.15  1.64 0.00518  3.13  3.15
 
 **Observations**:
 
@@ -473,20 +473,20 @@ df_q1 %>%
   - (Bootstrap CI: yes or no?) yes
   - (CLT CI: yes or no?) yes
 - How closely do your bootstrap CI and CLT CI agree?
-  - They agree quite closely. The bootstrap CI is 3.136559 to 3.145501,
-    while the CLT CI is 3.039985 to 3.2432.
+  - They agree quite closely. The bootstrap CI is 3.136035 to 3.1452,
+    while the CLT CI is 3.13432 to 3.151753.
 - Comment on the width of your CI(s). Would your estimate of $\pi$ be
   good enough for roughly estimating an area (e.g., to buy enough paint
   for an art project)? Would your estimate of $\pi$ be good enough for
   precisely calculating a trajectory (e.g., sending a rocket into
   orbit)?
-  - (Good enough as a rough estimate?) The width of the CLT CI is larger
-    than the width of the bootstrap CI, with a range of around 0.2. This
-    makes it more suitable for a rough estimate.
-  - (Good enough as a precise estimate?) The bootstrap CI is narrower,
-    with a range of 0.009. This is much more precise compared to the CLT
-    CI, but whether it’s suitable for something as precise as sending a
-    rocket into orbit can be debatable.
+  - (Good enough as a rough estimate?) The bootstrap CI has a range of
+    0.009165, while the CLT CI has a range of 0.017433. So, the range of
+    the bootstrap CI is actually slightly narrower, though both include
+    the true value of pi in the range.
+  - (Good enough as a precise estimate?) The range suggests that while
+    both are good for rough estimates, it’s not quite precise enough for
+    something like sending a rocket into orbit.
 - What would be a *valid* way to make your CI more narrow?
   - Increase the number of bootstrap samples.
 
