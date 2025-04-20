@@ -119,7 +119,12 @@ df_pivot <- df_antibiotics %>%
     cols = c(penicillin, streptomycin, neomycin),
     names_to = "antibiotic"
   ) %>% 
-  mutate(bacteria = fct_reorder(bacteria, antibiotic))
+  ungroup() %>% 
+  mutate(
+    bacteria = as.factor(bacteria),
+    bacteria = fct_reorder(bacteria, value)
+  ) %>% 
+  arrange(value)
 
 
 df_pivot 
@@ -136,7 +141,8 @@ is Gram positive or negative.
 df_pivot %>% 
   mutate(bacteria = fct_reorder(bacteria, antibiotic)) %>% 
   ggplot(aes(
-    x = bacteria,
+    # x = bacteria,
+    x = fct_reorder(bacteria, antibiotic),
     y = value
   ) ) +
   geom_point(aes(color = antibiotic, shape = gram), size = 2) +
@@ -268,21 +274,11 @@ Neomycin has the highest effectiveness for negative strains of bacteria,
 including Diplococcus pneumonia, streptococcus hemolyticus, and
 streptococcus vindans.
 
-Penicillin has the highest effectiveness when it comes to positive
-strains of bacteria, including Aerobecter aerogenes, Escherichia coli,
-Klebsiella pneumoniae, proteus vularis, mycobacterium tuberculosis,
-psuedomonas aeruginosa, and salmonella schottruelleri.
-
-Streptomycin has the widest range for the effectiveness of both positive
-and negative strains. Positive strains include brucella abortus,
-mycobacterium tuberculosis, and pseudomonas aeruginosa while the
-negative strains include diplococcus pneumonia, streptococcus
-hemoolyticus, and streptococcus vindans
-
-Overall, neomycin was effective for mostly negative strains while
-penicillin was effective for only positive strains. Streptomycin has the
-largest range of both positive and negative strains. In general,
-penicillin requires higher concentrations compared to the other two.
+Penicillin has the highest effectiveness when it comes to positive gram
+bacteria. Streptomycin is also mostly effective for positive gram
+bacteria. On the other hand, neomycin is effective for both positive and
+negative gram bacteria. All three are effective against staphylococcus
+aureus and bacillus anthrasis.
 
 \- Which of your visuals above (1 through 5) is **most effective** at
 helping to answer this question? - My second visual (the bar chart with
@@ -302,26 +298,23 @@ and in 1984 *Streptococcus fecalis* was renamed *Enterococcus fecalis*
 > Why was *Diplococcus pneumoniae* was renamed *Streptococcus
 > pneumoniae*?
 
-*Observations* - What is your response to the question above? -
-Diplococcus Pneumoniae is high in both streptomycin and neomycin, though
-it's the highest in streptomycin. Other streptococcus bacteria also have
-a high amount of a streptomycin, which closeley aligns with the
-biological structure of Diplococcus pneumoniae.
+*Observations* - What is your response to the question above? - Only
+penicillin was effective against Diplococcus Pneumoniae. Since
+penicillin is effective against all bacteria within the streptococcus
+genus, that could explain why it was renamed.
 
-Streptococcus fecalis has all three, but streptomycin and penicillin are
-significantly higher than neomycin. The presence of penicillin doesn't
-align with the other bacteria under the streptococcus genus, which could
-explain that name change.
+Streptococcus fecalis was renamed since penicillin was actually not the
+most effective against it. It seems actually seems like neocymin is the
+most effective at around 0.1, which is probably why it was renamed.
 
--   Which of your visuals above (1 through 5) is **most effective** at
-    helping to answer this question? - Visuals 4 and 5 - Why? - In
-    visual 4, I was able to compare the values of the different
-    antibiotics quite easily, especially since it was separated by
-    bacteria. That's how I was able to see that the streptococcus genus
-    is typically high in streptomycin. Visual 5 was helpful in answering
-    the second part of the question since I was able to see that the
-    penicillin level of streptococcus fecalis was considerably higher
-    compared to the other bacteria in the streptococcus genus.
+Which of your visuals above (1 through 5) is **most effective** at
+helping to answer this question? - Visuals 4 and 5 - Why? - In visual 4,
+I was able to compare the values of the different antibiotics quite
+easily, especially since it was separated by bacteria. Visual 5 was
+helpful in answering the second part of the question since I was able to
+see that the neomycin level of streptococcus fecalis was was present
+(around 0.1) whereas the other bacteria in the streptococcus genus had a
+penicillin level lower than 0.1.
 
 # References
 
