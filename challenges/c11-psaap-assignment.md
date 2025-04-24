@@ -382,8 +382,8 @@ rsquare(fit_nonphysical, df_validate)
   - fit_nonphysical is also the least accurate according to rsquare
 - What *Category* of variable is `avg_T`? Why is it such an effective
   predictor?
-  - It is an output variable. It’s an effective predictor since it’s
-    proportional to T_norm.
+  - It is an output variable. It’s an effective predictor since T_norm
+    is computed in terms of avg_T.
 - Would we have access to `avg_T` if we were trying to predict a *new*
   value of `T_norm`? Is `avg_T` a valid predictor?
   - No, because both are output variables, so either both exist or both
@@ -453,6 +453,18 @@ summary(fit_q4)
     ## Multiple R-squared:  0.9345, Adjusted R-squared:  0.9165 
     ## F-statistic: 52.04 on 17 and 62 DF,  p-value: < 2.2e-16
 
+``` r
+sd(df_psaap$x)
+```
+
+    ## [1] 0.2805121
+
+``` r
+sd(df_psaap$T_f)
+```
+
+    ## [1] 38.94204
+
 **Observations**:
 
 - Which columns are excluded in the model formula above? What categories
@@ -469,12 +481,12 @@ summary(fit_q4)
     coefficient for T_f is -3.791e-4.
 - What is the standard deviation of `x` in `df_psaap`? What about the
   standard deviation of `T_f`?
-  - The std of x is 1.656, while the std of T_f is 1.173e-3.
+  - The std of x is 0.28, while the std of T_f is 38.94.
 - How do these standard deviations relate to the regression coefficients
   for `x` and `T_f`?
-  - x has a large coefficient but also a large standard deviation
-    compared to T_f. Therefore, x has an overall stronger impact on the
-    prediction compared to T_f.
+  - x has a large coefficient but a smaller standard deviation compared
+    to T_f. This suggests that x has an overall stronger impact on the
+    predication compared to T_f.
 - Note that literally *all* of the inputs above have *some* effect on
   the output `T_norm`; so they are all “significant” in that sense. What
   does this tell us about the limitations of statistical significance
@@ -627,11 +639,11 @@ bind_rows(
 - Which model tends to be more accurate? How can you tell from this
   predicted-vs-actual plot?
   - Model 4 seems to be more accurate. By looking at the trend line, the
-    points in model 4 follow it more closely than model x.
+    points in model 4 follow it more closely than mode:l x only.
 - Which model tends to be *more confident* in its predictions? Put
   differently, which model has *narrower prediction intervals*?
-  - Model x tends to be more confident in its predictions since the
-    prediction intervals are narrower.
+  - Model: x only tends to be more confident in its predictions since
+    the prediction intervals are narrower.
 - How many predictors does the `fit_simple` model need in order to make
   a prediction? What about your model `fit_q4`?
   - fit_simple has one predictor, while fit_q4 has five predictors.
@@ -751,13 +763,14 @@ bind_rows(
   theme_minimal()
 ```
 
-![](c11-psaap-assignment_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](c11-psaap-assignment_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 **Recommendation**:
 
 - How much do you trust your model? Why?
   - The model outputs an accuracy of 93%, which is actually quite high.
-    However, the rsquare value is quite a bit lower at 67%.
+    However, the rsquare value is quite a bit lower at 67%. With these
+    taken into account, I’d trust my model a considerable amount.
 - What kind of interval—confidence or prediction—would you use for this
   task, and why?
   - I would use the prediction interval since we are trying to capture
